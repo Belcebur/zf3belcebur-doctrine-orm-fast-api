@@ -44,7 +44,7 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "ZF3Belcebur\\DoctrineORMResources\\": "src/"
+      "ZF3Belcebur\\DoctrineORMFastApi\\": "src/"
     }
   }
 }
