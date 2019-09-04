@@ -1,0 +1,50 @@
+{
+  "name": "zf3belcebur/doctrine-orm-fast-api",
+  "description": "Quickly create an automatic API CRUD with your Doctrine ORM connection",
+  "keywords": [
+    "API",
+    "CRUD",
+    "BREAD",
+    "Doctrine",
+    "ORM",
+    "Query",
+    "Repository",
+    "Validator",
+    "Form",
+    "Filter",
+    "Zend",
+    "ZF3",
+    "Tools"
+  ],
+  "type": "library",
+  "require": {
+    "php": "^7.1",
+    "zendframework/zend-filter": "2.*",
+    "doctrine/doctrine-module": "2.*",
+    "doctrine/doctrine-orm-module": "2.*"
+  },
+  "suggest": {
+    "zendframework/zend-form": "Necessary to use FormManager - Validate and display simple and complex forms, casting forms to business objects and vice versa.",
+    "zendframework/zend-hydrator": "Serialize objects to arrays, and vice versa, strategies.",
+    "zf3belcebur/doctrine-orm-resources": "DoctrineORM Resources to ZF3",
+    "zf3belcebur/materialize-css-helper": "MaterializeCss Helper integration to ZF3",
+    "zf3belcebur/mongodb-logger": "MongoDb Logger integration to ZF3",
+    "zf3belcebur/oauth2-social-client": "ZF3 extends module from thephpleague/oauth2-client",
+    "zf3belcebur/mvc-basic-tools": "ZF3 tools for controllers,views,helpers, plugins and more ...",
+    "nesbot/carbon": "A API extension for DateTime that supports 281 different languages."
+  },
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "David Garcia",
+      "email": "garcia.gordo.david@gmail.com",
+      "homepage": "https://github.com/Belcebur"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "ZF3Belcebur\\DoctrineORMResources\\": "src/"
+    }
+  }
+}
