@@ -52,8 +52,9 @@ Then add `ZF3Belcebur\DoctrineORMFastApi` to your `config/application.config.php
 use Zend\View\Model\JsonModel;use ZF3Belcebur\DoctrineORMFastApi\Controller\IndexController;$exchangeMessagesJsonView = $this->forward()->dispatch(IndexController::class, [
     'entity'  => YourEntity::class,
     'options' => [
-        'paginator' => true,
-        'entityManager' => true,
+        'paginator' => true, //set paginator object in return 
+        'entityManager' => true, //set entityManager in return
+        'hydrate' => false, //set items like objects in return
     ],
 ]);
 ``` 

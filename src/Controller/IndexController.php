@@ -107,7 +107,7 @@ class IndexController extends AbstractRestfulController
         $entityName = $this->params()->fromRoute('entity');
         $this->entityClass = $this->reflectionTable[$entityName] ?? null;
         if (!$this->entityClass) {
-            $key = array_search($entityName, $this->reflectionTable);
+            $key = array_search($entityName, $this->reflectionTable, true);
             $this->entityClass = $this->reflectionTable[$key] ?? null;
         }
         return $this->entityClass;
@@ -133,6 +133,7 @@ class IndexController extends AbstractRestfulController
         $paginator
             ->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1))
             ->setItemCountPerPage($limit);
+
         $result = $this->extractItems($paginator);
         $pageCount = $paginator->count();
         $page = $paginator->getCurrentPageNumber();
@@ -210,11 +211,13 @@ class IndexController extends AbstractRestfulController
      */
     private function extractItems($items): array
     {
+        $options = $this->params()->fromRoute('options');
+
         $result = [];
         $hydrator = $this->getHydratorWithStrategies();
 
         foreach ($items as $item) {
-            $result[] = $this->extractItem($item, $hydrator);
+            $result[] = ($options['hydrate'] ?? true) ? $this->extractItem($item, $hydrator) : $item;
         }
 
         return $result;
