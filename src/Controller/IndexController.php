@@ -28,6 +28,7 @@ use ZF3Belcebur\DoctrineORMFastApi\Resource\HydratorWithStrategies;
 use function array_key_exists;
 use function array_merge_recursive;
 use function array_pop;
+use function array_search;
 use function array_shift;
 use function array_slice;
 use function explode;
@@ -40,28 +41,32 @@ use function sprintf;
 
 class IndexController extends AbstractRestfulController
 {
-    /**
-     * @var ConfigReflection
-     */
+    /** @var ConfigReflection */
     protected $configReflection;
+
     /** @var array */
     protected $strategies = [];
+
     /**
      * @var EntityManager
      */
     private $em;
+
     /**
      * @var DoctrineObject
      */
     private $hydrator;
+
     /**
      * @var string
      */
     private $entityClass;
+
     /**
      * @var array
      */
     private $reflectionTable;
+
     /**
      * @var FormElementManagerV3Polyfill|FormElementManagerV2Polyfill
      */
@@ -90,8 +95,22 @@ class IndexController extends AbstractRestfulController
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->entityClass = $this->reflectionTable[$this->params()->fromRoute('entity')] ?? null;
+        $this->setEntityClassByRoute();
         return parent::onDispatch($e);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function setEntityClassByRoute(): ?string
+    {
+        $entityName = $this->params()->fromRoute('entity');
+        $this->entityClass = $this->reflectionTable[$entityName] ?? null;
+        if (!$this->entityClass) {
+            $key = array_search($entityName, $this->reflectionTable);
+            $this->entityClass = $this->reflectionTable[$key] ?? null;
+        }
+        return $this->entityClass;
     }
 
     /**
@@ -99,7 +118,7 @@ class IndexController extends AbstractRestfulController
      */
     public function getList(): ?JsonModel
     {
-        if (!$this->params()->fromRoute('entity')) {
+        if (!$this->entityClass) {
             return $this->getReflectionTableAction();
         }
         $limit = (int)$this->params()->fromQuery('limit', 20);
@@ -140,6 +159,16 @@ class IndexController extends AbstractRestfulController
             'result' => $result,
         ];
 
+
+        $options = (array)$this->params()->fromRoute('options');
+
+        if ($options['paginator'] ?? false) {
+            $params['paginator'] = $paginator;
+        }
+
+        if ($options['entityManager'] ?? false) {
+            $params['entityManager'] = $this->em;
+        }
 
         return new JsonModel($params);
     }

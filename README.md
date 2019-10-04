@@ -44,6 +44,20 @@ Then add `ZF3Belcebur\DoctrineORMFastApi` to your `config/application.config.php
 - go to url `/bapi`
 #### get list
 - go to url `/bapi/entity-name`
+#### get list
+- get EntityManager or Paginator Object from route params
+```php
+<?php
+/** @var JsonModel $exchangeMessagesJsonView */
+use Zend\View\Model\JsonModel;use ZF3Belcebur\DoctrineORMFastApi\Controller\IndexController;$exchangeMessagesJsonView = $this->forward()->dispatch(IndexController::class, [
+    'entity'  => YourEntity::class,
+    'options' => [
+        'paginator' => true,
+        'entityManager' => true,
+    ],
+]);
+``` 
+
 #### get list with filter
 - go to url `/bapi/entity-name?propertyOrRelationName=propertyOrRelationValue`
     - To filter with a boolean you need to convert to an integer
